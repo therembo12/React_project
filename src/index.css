@@ -302,3 +302,8 @@ input {
 .empty-list{
   color: black;
 }
+.ShowImage{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
