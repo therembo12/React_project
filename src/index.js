@@ -1,5 +1,4 @@
 import React, { Fragment, Component } from "react";
-import { v4 as uuidv4 } from "uuid";
 import ReactDOM from "react-dom";
 import "./index.css";
 // React Router
@@ -41,17 +40,23 @@ class App extends Component {
   }
 
   state = {
-    List: [
-      
+    List: [      
     ],
     CurrentContact: []
   };
+  addEditContact = (Id,newcontact) =>{
+    const index = this.state.List.findIndex((elem) => elem.Id === Id);
+    let tmpList = this.state.List.slice()
+    tmpList.splice(index,index,newcontact)
+    this.setState({
+      List: tmpList
+    })
+  }
   onEdit = (Id) =>{
     const index = this.state.List.findIndex((elem) => elem.Id === Id);
-    const CurrentContact = this.state.List[index]
-    
+    const currentContact = this.state.List[index]    
     this.setState({
-      CurrentContact: CurrentContact
+      CurrentContact: currentContact
     })
   }
   onDelete = (Id) => {
@@ -104,12 +109,12 @@ class App extends Component {
           <Header />
           <Switch>
 
-            <Route path="/" exact render={() => <ContactList ContactList={List} onDelete={this.onDelete} changeStatus={this.changeStatus} EditContact={this.onEdit} />}
+            <Route path="/" exact render={() => <ContactList ContactList={List} onDelete={this.onDelete} changeStatus={this.changeStatus} onEdit={this.onEdit} />}
             />
             <Route path="/contact" exact component={Contact} />
             <Route path="/about" exact component={About} />
             <Route path="/add-contact" exact render={() => <AddContact onAddContact={this.onAddContact} />} />
-            <Route path="/Edit-contact" exact render={() => <EditContact CurrentContact={CurrentContact} />} />
+            <Route path="/Edit-contact" exact render={() => <EditContact Contact={CurrentContact} addEditContact={this.addEditContact} />} />
 
             <Route component={NotFound} />
           </Switch>

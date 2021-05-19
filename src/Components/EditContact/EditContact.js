@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
 
+
 class EditContact extends React.Component {
   state = {
     Avatar: "",
@@ -58,10 +59,10 @@ class EditContact extends React.Component {
   sendForm = (e) => {
     e.preventDefault();
     const { Avatar, Gender, Name, Phone, Email, Status } = this.state;
-    const { onAddContact } = this.props;
+    const { addEditContact } = this.props;
     const newContact = {
       Id: uuidv4(),
-      Avatar: Avatar,
+      Avatar: parseInt(Avatar) ,
       Gender: Gender,
       Name: Name,
       Phone: Phone,
@@ -71,26 +72,26 @@ class EditContact extends React.Component {
     this.setState({
       isRedirect: true,
     });
-    onAddContact(newContact);
+    addEditContact(this.state.Id,newContact);
   };
   ShowImage = (e) =>{
     const  Gender = this.state.Gender;  
     const DynamicImg = e.target.value
     this.setState({        
-        DynamicImg : `https://randomuser.me/portraits/${Gender}/${DynamicImg}.jpg`,
-        Avatar:DynamicImg
+        DynamicImg : `https://randomuser.me/portraits/${Gender}/${DynamicImg}.jpg`
     })
   }
   render() {
+    console.log('onEdit props',this.props)
     const { Avatar, Gender, Name, Phone, Email, Status, isRedirect,DynamicImg } =
-      this.state;
+      this.props.Contact;
     if (isRedirect) {
       return <Redirect to="/" />;
     }
     return (
       <Fragment>
         <div className="container">
-          <h2 className='mt-3' style={{textAlign:'center',fontSize:'35px'}}>Add new contact</h2>
+          <h2 className='mt-3' style={{textAlign:'center',fontSize:'35px'}}>Edit contact</h2>
           <form onSubmit={this.sendForm}>
               <div className='row col-12'>
               <div className='col-6'>
@@ -102,7 +103,6 @@ class EditContact extends React.Component {
                   type="text"
                   placeholder={Name}
                   onChange={this.getName}
-                  required
                 />
               </fieldset>
             </div>
@@ -145,7 +145,7 @@ class EditContact extends React.Component {
               />
             </div>
             </div>
-            <div className='col-5 ShowImage mt-5 ml-5' style={{backgroundImage:`url('${DynamicImg}')`}}></div>
+            <div className='col-5 ShowImage mt-5 ml-5' style={{backgroundImage:`url('${this.state.DynamicImg}')`}}></div>
             </div>
             <div>
             <div className="form-group col-12">
@@ -157,7 +157,7 @@ class EditContact extends React.Component {
                 type="text"
                 onClick={this.getGender}
                 required
-
+                
               >
                 <option selected disabled></option>
                 <option value='men'>Male</option>
@@ -175,7 +175,7 @@ class EditContact extends React.Component {
                 className="form-control"
                 onChange={(this.getAvatar,this.ShowImage)}
                 required
-
+                placeholder={Avatar}
               />
             </div>
             </div>

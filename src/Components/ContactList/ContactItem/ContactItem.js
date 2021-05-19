@@ -6,7 +6,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 
 const ContactItem = (props) => {
-  const { Avatar, Gender, Name, Phone, Email, Status, onDelete, changeStatus,onEdit} = props;
+  const { Avatar, Gender, Name, Phone, Email, Status, onDelete, changeStatus, onEdit} = props;
   const image = `https://randomuser.me/portraits/${Gender}/${Avatar}.jpg`
 
   return (
