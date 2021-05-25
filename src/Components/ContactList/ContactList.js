@@ -3,7 +3,7 @@ import React from "react";
 // ContactItem
 import ContactItem from "./ContactItem/ContactItem";
 
-const ContactList = ({ ContactList, onDelete, changeStatus, onEdit,addEditContact }) => {
+const ContactList = ({ ContactList, onDelete, changeStatus, onEdit }) => {
     const item = ContactList.map(contact => {
         return <ContactItem key={contact.Id}  {...contact}addEditContact={()=>(contact.Id)} onEdit={() => onEdit(contact.Id)} onDelete={() => onDelete(contact.Id)} changeStatus = {()=> changeStatus(contact.Id)} />
     })
