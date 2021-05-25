@@ -3,10 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 // React Router
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-<<<<<<< HEAD
 import { withRouter } from "react-router";
-=======
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
 // Components
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
@@ -38,7 +35,6 @@ class App extends Component {
   state = {
     List: [],
     CurrentContact: [],
-<<<<<<< HEAD
     findContact: "",
     findProp: "",
   };
@@ -50,16 +46,6 @@ class App extends Component {
     } else {
       tmpList.splice(index, index, newContact);
     }
-=======
-  };
-  addEditContact = (Id, newContact) => {
-    console.log("This STATE LIST", this.state.List);
-    let index = this.state.List.findIndex((elem) => elem.Id === Id);
-    let tmpList = this.state.List.slice();
-    console.log("index", index);
-    tmpList.splice(index, index, newContact);
-    console.log("tpmlist", tmpList);
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
     this.setState({
       List: tmpList,
     });
@@ -112,7 +98,6 @@ class App extends Component {
     });
     updateContacts(tmpList);
   };
-<<<<<<< HEAD
   searchName = (event) => {
     let searchName = event.target.value;
     this.setState({
@@ -138,10 +123,6 @@ class App extends Component {
       );
     });
   };
-=======
-  render() {
-    const { List, CurrentContact } = this.state;
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
 
   render() {
     const showContact = this.onShowContact(
@@ -160,11 +141,7 @@ class App extends Component {
               exact
               render={() => (
                 <ContactList
-<<<<<<< HEAD
                   ContactList={showContact}
-=======
-                  ContactList={List}
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
                   onDelete={this.onDelete}
                   changeStatus={this.changeStatus}
                   onEdit={this.onEdit}

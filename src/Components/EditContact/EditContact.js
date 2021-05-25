@@ -1,10 +1,6 @@
 import React, { Fragment } from "react";
 import { v4 as uuidv4 } from "uuid";
-<<<<<<< HEAD
 import { Redirect, withRouter } from "react-router-dom";
-=======
-import { Redirect } from "react-router-dom";
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
 
 class EditContact extends React.Component {
   state = {
@@ -79,10 +75,6 @@ class EditContact extends React.Component {
     });
     addEditContact(Id, newContact);
 
-<<<<<<< HEAD
-=======
-    console.log(newContact);
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
   };
   ShowImage = (e) => {
     const Gender = this.state.Gender;
@@ -96,10 +88,6 @@ class EditContact extends React.Component {
     console.log("onEdit props", this.props.Contact);
     let { isRedirect } = this.state;
     const { Avatar, Gender, Name, Phone, Email, Status } = this.props.Contact;
-<<<<<<< HEAD
-=======
-    console.log("privet", isRedirect);
->>>>>>> b3acf20aa064a84654d7be223ad64999008170e4
     if (isRedirect) {
       console.log('privet',this.props.Id )
 
