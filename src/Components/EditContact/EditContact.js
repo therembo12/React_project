@@ -1,20 +1,23 @@
 import React, { Fragment } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { Redirect, withRouter } from "react-router-dom";
-
+import { Redirect } from "react-router-dom";
+import { AddEditContact } from "../../actions/ContactListAction";
+import { connect } from "react-redux";
+import { updateContacts } from "../../services/apiservice";
+import { browserHistory } from "react-router";
 class EditContact extends React.Component {
   state = {
-    Avatar: "",
-    Gender: "",
-    Name: "",
-    Phone: "",
-    Email: "",
-    Status: "",
+    Avatar: this.props.List[this.props.CurrectContactIndex].Avatar,
+    Gender: this.props.List[this.props.CurrectContactIndex].Gender,
+    Name: this.props.List[this.props.CurrectContactIndex].Name,
+    Phone: this.props.List[this.props.CurrectContactIndex].Phone,
+    Email: this.props.List[this.props.CurrectContactIndex].Email,
+    Status: this.props.List[this.props.CurrectContactIndex].Status,
     DynamicImg: "",
-    isRedirect: false,
-    Id: "",
+    Id: this.props.List[this.props.CurrectContactIndex].Id,
+    isRedirect: null,
   };
   getName = (e) => {
+    console.log(this.props.List);
     const Name = e.target.value;
     console.log(Name);
     this.setState({
@@ -58,23 +61,27 @@ class EditContact extends React.Component {
   };
   sendForm = (e) => {
     e.preventDefault();
-    const { Avatar, Gender, Name, Phone, Email, Status } = this.state;
-    const { addEditContact } = this.props;
-    const { Id } = this.props.Contact;
+    const { CurrectContactIndex } = this.props;
+    const { AddEditContact, List } = this.props;
     const newContact = {
-      Id: Id,
-      Avatar: Avatar,
-      Gender: Gender,
-      Name: Name,
-      Phone: Phone,
-      Email: Email,
-      Status: Status,
+      Id: this.state.Id,
+      Avatar: this.state.Avatar,
+      Gender: this.state.Gender,
+      Name: this.state.Name,
+      Phone: this.state.Phone,
+      Email: this.state.Email,
+      Status: this.state.Status,
     };
+    console.log("LOCAL STATE", this.state);
+    console.log("LIST from Props", List);
+    console.log("index", CurrectContactIndex, "New contact", newContact);
+    List[CurrectContactIndex] = newContact;
+    console.log(List);
+    AddEditContact(List);
+    updateContacts(List);
     this.setState({
       isRedirect: true,
     });
-    addEditContact(Id, newContact);
-
   };
   ShowImage = (e) => {
     const Gender = this.state.Gender;
@@ -84,16 +91,15 @@ class EditContact extends React.Component {
       Avatar: DynamicImg,
     });
   };
-  render() {
-    console.log("onEdit props", this.props.Contact);
-    let { isRedirect } = this.state;
-    const { Avatar, Gender, Name, Phone, Email, Status } = this.props.Contact;
-    if (isRedirect) {
-      console.log('privet',this.props.Id )
 
+  render() {
+    const { CurrectContactIndex } = this.props;
+    const { Avatar, Gender, Name, Phone, Email, Status } =
+      this.props.List[CurrectContactIndex];
+    if (this.state.isRedirect) {
       return <Redirect to="/" />;
-    } else if(this.props.Contact.length == 0){
-      return <Redirect to='/'/>
+    } else if (this.props.length == 0) {
+      return <Redirect to="/" />;
     }
     return (
       <Fragment>
@@ -113,8 +119,8 @@ class EditContact extends React.Component {
                     <input
                       className="form-control"
                       type="text"
-                      placeholder={Name}
-                      onChange={this.getName}
+                      value={this.state.Name}
+                      onChange={(e) => this.getName(e)}
                     />
                   </fieldset>
                 </div>
@@ -125,8 +131,8 @@ class EditContact extends React.Component {
                     <input
                       className="form-control"
                       type="email"
-                      placeholder={Email}
-                      onChange={this.getEmail}
+                      value={this.state.Email}
+                      onChange={(e) => this.getEmail(e)}
                       required
                     />
                   </fieldset>
@@ -136,9 +142,9 @@ class EditContact extends React.Component {
                   <label className="form-label mt-4">Phone</label>
                   <input
                     type="number"
-                    placeholder={Phone}
+                    value={this.state.Phone}
                     className="form-control"
-                    onChange={this.getPhone}
+                    onChange={(e) => this.getPhone(e)}
                     required
                   />
                 </div>
@@ -147,9 +153,9 @@ class EditContact extends React.Component {
                   <label className="form-label mt-4">Status</label>
                   <input
                     type="text"
-                    placeholder={Status}
+                    value={this.state.Status}
                     className="form-control"
-                    onChange={this.getStatus}
+                    onChange={(e) => this.getStatus(e)}
                     required
                   />
                 </div>
@@ -200,4 +206,11 @@ class EditContact extends React.Component {
     );
   }
 }
-export default withRouter(EditContact) ;
+const mapStateToProps = ({ ContactListReducer }) => {
+  const { List, CurrectContactIndex } = ContactListReducer;
+  return { List, CurrectContactIndex };
+};
+const mapDispatchToProps = {
+  AddEditContact,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(EditContact);
